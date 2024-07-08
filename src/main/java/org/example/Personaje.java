@@ -7,18 +7,20 @@ public abstract class Personaje {
     protected String raza;
     protected String fechaNacimiento;
     protected int edad;
+    protected int nivel;
     protected int salud = 100;
     protected int velocidad;
     protected int destreza;
     protected int fuerza;
     protected int armadura;
 
-    public Personaje(String nombre, String apodo, String raza, String fechaNacimiento, int edad, int salud, int velocidad, int destreza, int fuerza, int armadura) {
+    public Personaje(String nombre, String apodo, String raza, String fechaNacimiento, int edad, int nivel, int salud, int velocidad, int destreza, int fuerza, int armadura) {
         this.nombre = nombre;
         this.apodo = apodo;
         this.raza = raza;
         this.fechaNacimiento = fechaNacimiento;
         this.edad = edad;
+        this.nivel = nivel;
         this.salud = salud;
         this.velocidad = velocidad;
         this.destreza = destreza;
@@ -123,9 +125,17 @@ public abstract class Personaje {
         this.armadura = armadura;
     }
 
+    public int getNivel() {
+        return nivel;
+    }
+
+    public void setNivel(int nivel) {
+        this.nivel = nivel;
+    }
+
     public abstract double calcularDanio(double va, double ed, double pdef);
 
-    public void mejorarHabilidades() {
+    public void mejorarSalud() {
         this.salud += 10;
     }
 }

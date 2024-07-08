@@ -28,6 +28,7 @@ public class GeneradorPersonajes {
             String apodo = APODOS[random.nextInt(APODOS.length)];
             String fechaNacimiento = FECHAS_NACIMIENTO[random.nextInt(FECHAS_NACIMIENTO.length)];
             int edad = random.nextInt(300) + 1;
+            int nivel = random.nextInt(10) + 1;
             int salud = 100;
             int velocidad = random.nextInt(10) + 1;
             int destreza = random.nextInt(5) + 1;
@@ -38,11 +39,11 @@ public class GeneradorPersonajes {
             Personaje nuevoPersonaje = null;
 
             if (raza.equalsIgnoreCase("Humano")) {
-                nuevoPersonaje = new Humano(nombre, apodo, raza, fechaNacimiento, edad, salud,  velocidad, destreza, fuerza, armadura);
+                nuevoPersonaje = new Humano(nombre, apodo, raza, fechaNacimiento, edad, nivel,  salud,  velocidad, destreza, fuerza, armadura);
             } else if (raza.equalsIgnoreCase("Elfo")) {
-                nuevoPersonaje = new Elfo(nombre, apodo, raza, fechaNacimiento, edad, salud,  velocidad, destreza, fuerza, armadura);
+                nuevoPersonaje = new Elfo(nombre, apodo, raza, fechaNacimiento, edad, nivel,  salud,  velocidad, destreza, fuerza, armadura);
             } else if (raza.equalsIgnoreCase("Orco")) {
-                nuevoPersonaje = new Orco(nombre, apodo, raza, fechaNacimiento, edad, salud,  velocidad, destreza, fuerza, armadura);
+                nuevoPersonaje = new Orco(nombre, apodo, raza, fechaNacimiento, edad, nivel,  salud,  velocidad, destreza, fuerza, armadura);
             }
 
             if (nuevoPersonaje != null) {
@@ -55,17 +56,17 @@ public class GeneradorPersonajes {
 
 
     // METODO PARA INGRESAR PERSONAJES MANUALMENTE
-    public void ingresarPersonajesManualmente(String raza, String nombre, String apodo, String fechaNacimiento, int edad, int velocidad, int destreza, int fuerza, int armadura) {
+    public void ingresarPersonajesManualmente(String raza, String nombre, String apodo, String fechaNacimiento, int edad, int nivel,  int velocidad, int destreza, int fuerza, int armadura) {
         // Crear un nuevo personaje según la raza
         Personaje nuevoPersonaje = null;
         int salud = 100;
 
         if (raza.equalsIgnoreCase("Humano")) {
-            nuevoPersonaje = new Humano(nombre, apodo, raza, fechaNacimiento, edad, salud,  velocidad, destreza, fuerza, armadura);
+            nuevoPersonaje = new Humano(nombre, apodo, raza, fechaNacimiento, edad, nivel,  salud,  velocidad, destreza, fuerza, armadura);
         } else if (raza.equalsIgnoreCase("Elfo")) {
-            nuevoPersonaje = new Elfo(nombre, apodo, raza, fechaNacimiento, edad, salud,  velocidad, destreza, fuerza, armadura);
+            nuevoPersonaje = new Elfo(nombre, apodo, raza, fechaNacimiento, edad, nivel,  salud,  velocidad, destreza, fuerza, armadura);
         } else if (raza.equalsIgnoreCase("Orco")) {
-            nuevoPersonaje = new Orco(nombre, apodo, raza, fechaNacimiento, edad, salud,  velocidad, destreza, fuerza, armadura);
+            nuevoPersonaje = new Orco(nombre, apodo, raza, fechaNacimiento, edad, nivel,  salud,  velocidad, destreza, fuerza, armadura);
         }
 
         // Agregar el nuevo personaje a la lista de personajes
