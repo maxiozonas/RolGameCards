@@ -7,7 +7,8 @@ public class Humano extends Personaje {
 
     @Override
     public double calcularDanio(double va, double ed, double pdef) {
-        return (((va * ed) - pdef) / 500) * 100;
+        return ((((va * ed) - pdef) / 500) * 100) + 10;
     }
 }
+
 

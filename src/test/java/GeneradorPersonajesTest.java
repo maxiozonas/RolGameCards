@@ -47,7 +47,8 @@ public class GeneradorPersonajesTest {
         String nombre1 = "Gandalf";
         String apodo1 = "El Gris";
         String fechaNacimiento1 = "01/01/2000";
-        int salud1 = 100;
+        int edad1 = 50;
+        int nivel1 = 8;
         int velocidad1 = 5;
         int destreza1 = 3;
         int fuerza1 = 7;
@@ -57,7 +58,8 @@ public class GeneradorPersonajesTest {
         String nombre2 = "Legolas";
         String apodo2 = "Leggy";
         String fechaNacimiento2 = "01/01/2001";
-        int salud2 = 90;
+        int edad2 = 50;
+        int nivel2 = 8;
         int velocidad2 = 6;
         int destreza2 = 4;
         int fuerza2 = 6;
@@ -67,16 +69,17 @@ public class GeneradorPersonajesTest {
         String nombre3 = "Thrall";
         String apodo3 = "Warchief";
         String fechaNacimiento3 = "01/01/1995";
-        int salud3 = 110;
+        int edad3 = 50;
+        int nivel3 = 8;
         int velocidad3 = 4;
         int destreza3 = 5;
         int fuerza3 = 9;
         int armadura3 = 10;
 
         // Agregar los personajes manualmente usando los nuevos métodos
-        generador.ingresarPersonajesManualmente(raza1, nombre1, apodo1, fechaNacimiento1, salud1, velocidad1, destreza1, fuerza1, armadura1);
-        generador.ingresarPersonajesManualmente(raza2, nombre2, apodo2, fechaNacimiento2, salud2, velocidad2, destreza2, fuerza2, armadura2);
-        generador.ingresarPersonajesManualmente(raza3, nombre3, apodo3, fechaNacimiento3, salud3, velocidad3, destreza3, fuerza3, armadura3);
+        generador.ingresarPersonajesManualmente(raza1, nombre1, apodo1, fechaNacimiento1, edad1, nivel1, velocidad1, destreza1, fuerza1, armadura1);
+        generador.ingresarPersonajesManualmente(raza2, nombre2, apodo2, fechaNacimiento2, edad2, nivel2, velocidad2, destreza2, fuerza2, armadura2);
+        generador.ingresarPersonajesManualmente(raza3, nombre3, apodo3, fechaNacimiento3, edad3, nivel3, velocidad3, destreza3, fuerza3, armadura3);
 
         // Obtener la lista de personajes ingresados
         List<Personaje> personajes = generador.getPersonajes();
@@ -90,6 +93,8 @@ public class GeneradorPersonajesTest {
         assertEquals("Humano", personaje1.getRaza());
         assertEquals("Gandalf", personaje1.getNombre());
         assertEquals("El Gris", personaje1.getApodo());
+        assertEquals(50, personaje1.getEdad());
+        assertEquals(8, personaje1.getNivel());
         assertEquals(100, personaje1.getSalud());
         assertEquals(5, personaje1.getVelocidad());
         assertEquals(3, personaje1.getDestreza());
@@ -101,6 +106,8 @@ public class GeneradorPersonajesTest {
         assertEquals("Elfo", personaje2.getRaza());
         assertEquals("Legolas", personaje2.getNombre());
         assertEquals("Leggy", personaje2.getApodo());
+        assertEquals(50, personaje2.getEdad());
+        assertEquals(8, personaje2.getNivel());
         assertEquals(100, personaje2.getSalud());
         assertEquals(6, personaje2.getVelocidad());
         assertEquals(4, personaje2.getDestreza());
@@ -112,12 +119,76 @@ public class GeneradorPersonajesTest {
         assertEquals("Orco", personaje3.getRaza());
         assertEquals("Thrall", personaje3.getNombre());
         assertEquals("Warchief", personaje3.getApodo());
+        assertEquals(50, personaje3.getEdad());
+        assertEquals(8, personaje3.getNivel());
         assertEquals(100, personaje3.getSalud());
         assertEquals(4, personaje3.getVelocidad());
         assertEquals(5, personaje3.getDestreza());
         assertEquals(9, personaje3.getFuerza());
         assertEquals(10, personaje3.getArmadura());
     }
+
+    @Test
+    public void testNombreYApodoDuplicados() {
+        String raza = "Humano";
+        String nombre = "Aragorn";
+        String apodo = "El Valiente";
+        String fechaNacimiento = "01/01/2000";
+        int edad = 50;
+        int nivel = 8;
+        int velocidad = 5;
+        int destreza = 3;
+        int fuerza = 7;
+        int armadura = 8;
+
+        // Agregar el primer personaje
+        generador.ingresarPersonajesManualmente(raza, nombre, apodo, fechaNacimiento, edad, nivel, velocidad, destreza, fuerza, armadura);
+
+        // Intentar agregar un personaje con el mismo nombre y apodo
+        generador.ingresarPersonajesManualmente(raza, nombre, apodo, fechaNacimiento, edad, nivel, velocidad, destreza, fuerza, armadura);
+
+        // Verificar que solo se haya agregado el primer personaje
+        List<Personaje> personajes = generador.getPersonajes();
+        assertNotNull(personajes);
+        assertEquals(1, personajes.size());
+    }
+
+    @Test
+    public void testNombreYApodoDisponibles() {
+        String raza1 = "Humano";
+        String nombre1 = "Aragorn";
+        String apodo1 = "El Valiente";
+        String fechaNacimiento1 = "01/01/2000";
+        int edad1 = 50;
+        int nivel1 = 8;
+        int velocidad1 = 5;
+        int destreza1 = 3;
+        int fuerza1 = 7;
+        int armadura1 = 8;
+
+        String raza2 = "Elfo";
+        String nombre2 = "Legolas";
+        String apodo2 = "El Arquero";
+        String fechaNacimiento2 = "01/01/2001";
+        int edad2 = 50;
+        int nivel2 = 8;
+        int velocidad2 = 6;
+        int destreza2 = 4;
+        int fuerza2 = 6;
+        int armadura2 = 7;
+
+        // Agregar los personajes manualmente usando los nuevos métodos
+        generador.ingresarPersonajesManualmente(raza1, nombre1, apodo1, fechaNacimiento1, edad1, nivel1, velocidad1, destreza1, fuerza1, armadura1);
+        generador.ingresarPersonajesManualmente(raza2, nombre2, apodo2, fechaNacimiento2, edad2, nivel2, velocidad2, destreza2, fuerza2, armadura2);
+
+        // Obtener la lista de personajes ingresados
+        List<Personaje> personajes = generador.getPersonajes();
+
+        // Verificar que se hayan ingresado los personajes correctamente
+        assertNotNull(personajes);
+        assertEquals(2, personajes.size());
+    }
 }
+
 
 

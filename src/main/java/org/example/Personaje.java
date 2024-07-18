@@ -30,18 +30,17 @@ public abstract class Personaje {
 
     @Override
     public String toString() {
-        return "Personaje{" +
-                "raza='" + raza + '\'' +
+        return "raza='" + raza + '\'' +
                 ", nombre='" + nombre + '\'' +
                 ", apodo='" + apodo + '\'' +
-                ", fechaNacimiento=" + fechaNacimiento +
                 ", edad=" + edad +
                 ", salud=" + salud +
+                ", nivel=" + nivel +
                 ", velocidad=" + velocidad +
                 ", destreza=" + destreza +
                 ", fuerza=" + fuerza +
-                ", armadura=" + armadura +
-                '}';
+                ", armadura=" + armadura
+                ;
     }
 
 
@@ -136,6 +135,12 @@ public abstract class Personaje {
     public abstract double calcularDanio(double va, double ed, double pdef);
 
     public void mejorarSalud() {
-        this.salud += 10;
+        this.salud = Math.min(this.salud + 5, 130); // Máximo 130
+    }
+
+    public void mejorarNivel() {
+        if (this.nivel < 10) {
+            this.nivel += 1; // Máximo 10
+        }
     }
 }
