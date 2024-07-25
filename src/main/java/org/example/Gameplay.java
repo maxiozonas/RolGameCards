@@ -7,13 +7,29 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * Clase que encapsula la lógica principal del juego, gestionando las partidas, los combates y los resultados.
+ *
+ * Esta clase es el corazón del juego, coordinando todas las acciones desde la inicialización de una partida hasta la determinación del ganador y el guardado de los resultados.
+ */
+
 public class Gameplay {
     private static final int ATAQUES_POR_RONDA = 7;
     private static final int TIEMPO_ESPERA = 1000; // 1 segundo
     private List<Personaje> jugadoresOriginales1;
     private List<Personaje> jugadoresOriginales2;
 
-    public void iniciarPartida(List<Personaje> personajes) {
+    /**
+     * Inicia una nueva partida con los personajes proporcionados.
+     *
+     * Esta función divide a los personajes en dos equipos, inicializa las rondas y gestiona el flujo del juego hasta que un equipo quede sin personajes.
+     *
+     * @param personajes Lista de personajes que participarán en la partida.
+     * @return Un objeto ResultadoPartida que contiene los detalles de la partida.
+     * @throws IllegalArgumentException Si la lista de personajes no contiene exactamente 6 elementos.
+     */
+
+    public ResultadoPartida iniciarPartida(List<Personaje> personajes) {
         if (personajes.size() != 6) {
             throw new IllegalArgumentException("Se requieren exactamente 6 personajes para iniciar la partida");
         }
@@ -87,10 +103,16 @@ public class Gameplay {
         // Declarar al ganador y mostrar los honores
         declararGanador(jugadores1, jugadores2);
 
-        // Guardar el log de la partida
-        guardarLog(jugadoresOriginales1, jugadoresOriginales2, jugadores1, jugadores2,
-                jugadores1.isEmpty() ? "Jugador 2" : "Jugador 1");
+        String ganador = jugadores1.isEmpty() ? "Jugador 2" : "Jugador 1";
+        return new ResultadoPartida(jugadoresOriginales1, jugadoresOriginales2, jugadores1, jugadores2, ganador);
     }
+
+    /**
+     * Muestra los detalles de los personajes de un equipo en la consola.
+     *
+     * @param personajes Lista de personajes a mostrar.
+     * @param jugador Nombre del jugador al que pertenecen los personajes.
+     */
 
     private void mostrarPersonajes(List<Personaje> personajes, String jugador) {
         System.out.println("\nPersonajes del " + jugador + ":");
@@ -99,6 +121,15 @@ public class Gameplay {
             System.out.println(personajes.get(i));
         }
     }
+
+    /**
+     * Maneja el fin de una ronda, actualizando el estado de los personajes y eliminando a los muertos.
+     *
+     * @param personaje1 Primer personaje involucrado en la ronda.
+     * @param personaje2 Segundo personaje involucrado en la ronda.
+     * @param jugadores1 Lista de personajes del jugador 1.
+     * @param jugadores2 Lista de personajes del jugador 2.
+     */
 
     private void manejarFinDeRonda(Personaje personaje1, Personaje personaje2, List<Personaje> jugadores1, List<Personaje> jugadores2) {
         // Mostrar salud restante de ambos personajes
@@ -122,6 +153,15 @@ public class Gameplay {
         }
     }
 
+    /**
+     * Calcula el daño de un ataque y actualiza la salud del defensor.
+     *
+     * La fórmula de daño es: daño = (ataqueDelJugador * factorSuerte) - defensaDelDefensor.
+     *
+     * @param atacante El personaje que realiza el ataque.
+     * @param defensor El personaje que recibe el ataque.
+     */
+
     private void atacar(Personaje atacante, Personaje defensor) {
         Random random = new Random();
 
@@ -140,6 +180,13 @@ public class Gameplay {
 
         System.out.println(atacante.getApodo() + " ataca a " + defensor.getApodo() + " y le quita " + (int) danio + " de salud. " + defensor.getApodo() + " queda con " + defensor.getSalud());
     }
+
+    /**
+     * Determina el ganador de la partida y muestra los resultados en la consola.
+     *
+     * @param jugadores1 Lista de personajes sobrevivientes del jugador 1.
+     * @param jugadores2 Lista de personajes sobrevivientes del jugador 2.
+     */
 
     private void declararGanador(List<Personaje> jugadores1, List<Personaje> jugadores2) {
         List<Personaje> ganadores;
@@ -182,67 +229,5 @@ public class Gameplay {
         }
 
         System.out.println("\n¡Que el reinado del " + jugadorGanador + " sea largo y próspero!");
-    }
-
-    private void guardarLog(List<Personaje> jugadoresOriginales1, List<Personaje> jugadoresOriginales2,
-                            List<Personaje> jugadoresSobrevivientes1, List<Personaje> jugadoresSobrevivientes2,
-                            String ganador) {
-
-        String fileName = "partidas_log.txt";
-        try (FileWriter fw = new FileWriter(fileName, true);
-             BufferedWriter bw = new BufferedWriter(fw);
-             PrintWriter out = new PrintWriter(bw)) {
-
-            LocalDateTime now = LocalDateTime.now();
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-            String formattedDate = now.format(formatter);
-
-            out.println("Fecha y hora de la partida: " + formattedDate);
-
-            out.println("Personajes del Jugador 1:");
-            for (Personaje p : jugadoresOriginales1) {
-                boolean sobrevivio = jugadoresSobrevivientes1.contains(p);
-                out.println("- " + p.getNombre() + " (" + p.getRaza() + ") - " +
-                        (sobrevivio ? "Sobrevivió" : "Caído en combate"));
-            }
-
-            out.println("Personajes del Jugador 2:");
-            for (Personaje p : jugadoresOriginales2) {
-                boolean sobrevivio = jugadoresSobrevivientes2.contains(p);
-                out.println("- " + p.getNombre() + " (" + p.getRaza() + ") - " +
-                        (sobrevivio ? "Sobrevivió" : "Caído en combate"));
-            }
-
-            out.println("Ganador de la partida: " + ganador);
-            out.println("----------------------------------------");
-        } catch (IOException e) {
-            System.out.println("Error al guardar el log: " + e.getMessage());
-        }
-    }
-
-    public void leerLogs() {
-        String fileName = "partidas_log.txt";
-        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                System.out.println(line);
-            }
-        } catch (IOException e) {
-            System.out.println("Error al leer el log: " + e.getMessage());
-        }
-    }
-
-    public void borrarLogs() {
-        String fileName = "partidas_log.txt";
-        File file = new File(fileName);
-        if (file.exists()) {
-            if (file.delete()) {
-                System.out.println("El archivo de logs ha sido borrado exitosamente.");
-            } else {
-                System.out.println("No se pudo borrar el archivo de logs. Verifica los permisos del archivo.");
-            }
-        } else {
-            System.out.println("El archivo de logs no existe.");
-        }
     }
 }
